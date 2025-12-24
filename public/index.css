@@ -1,19 +1,126 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap");
 
+/* ===== BASE ===== */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 body {
   font-family:
     "Comic Sans MS",
-    Comic Sans;
-  margin: 0;
-  background: #0f0f0f; /* dark background */
-  color: #eaeaea; /* main text color */
+    Comic Sans,
+    system-ui;
+  background: #0f0f0f;
+  color: #eaeaea;
+  overflow: hidden;
+}
+
+/* ===== TOP BAR ===== */
+#topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #111;
+  border-bottom: 1px solid #222;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+#nav-form {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+  align-items: center;
+}
+
+#nav-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+#nav-controls button {
+  height: 32px;
+  width: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: #fff;
+  cursor: pointer;
+}
+
+#nav-controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+#nav-input {
+  flex: 1;
+  height: 32px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #ffffff;
+  padding: 0 12px;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+}
+
+#nav-input::placeholder {
+  color: #888;
+}
+
+#nav-input:focus {
+  border-color: #ffffff;
+}
+
+#nav-form button[type="submit"] {
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#nav-form button[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+/* ===== HOME / LANDING ===== */
+#home {
+  margin-top: 48px;
+  height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  text-align: center;
 }
 
+/* ===== SCRAMJET FRAME ===== */
+#sj-frame {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  border: none;
+  background-color: #111;
+  z-index: 10;
+}
+
+/* ===== HELPERS ===== */
 .flex-center {
   display: flex;
   justify-content: center;
@@ -22,24 +129,13 @@ body {
 .header-center {
   align-items: center;
   flex-direction: column;
-  margin-top: 10%;
 }
 
 .left-margin {
   margin: 0px 16px;
 }
 
-#sj-frame {
-  border: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #111;
-}
-
-/* Error text */
+/* ===== ERRORS ===== */
 #sj-error {
   color: #ff5c5c !important;
   white-space: pre-wrap;
@@ -51,6 +147,7 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
+/* ===== LOGO / BRANDING ===== */
 .logo {
   height: 25vh;
 }
@@ -64,6 +161,7 @@ body {
   color: #ffffff;
 }
 
+/* ===== FOOTER ===== */
 footer {
   margin: 0 16px;
   margin-top: auto;
@@ -89,48 +187,18 @@ footer span {
   font-size: 15px;
 }
 
-footer a {
-  cursor: pointer;
-}
-
 footer a:hover {
   text-decoration: underline;
   color: #ffffff;
 }
 
-/* Description text */
+/* ===== DESCRIPTION ===== */
 .desc p {
   width: 560px;
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Input field */
-#sj-address {
-  background: #1a1a1a;
-  font-family: inherit;
-  padding: 0px 17px;
-  height: 48px;
-  border: 1px solid #333;
-  color: #ffffff;
-  border-radius: 50px;
-  outline: none;
-  width: 350px;
-  margin-top: 5px;
-  transition:
-    border-radius 0.1s,
-    border 0.1s;
-}
-
-#sj-address::placeholder {
-  color: #888;
-}
-
-#sj-address:focus {
-  border: 1px solid #ffffff;
-  border-radius: 8px;
-}
-
-/* Credit box */
+/* ===== CREDIT BOX ===== */
 .credit {
   border-radius: 10px;
   padding: 10px;
