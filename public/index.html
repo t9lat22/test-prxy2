@@ -1,6 +1,68 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script type="text/javascript">
+      // This is a CodeSandbox injection script that's used to
+      // add navigation and inspector functionality to the preview
+      (function () {
+        var me = document.currentScript;
+        var script = document.createElement("script");
+        script.src = "https://codesandbox.io/p/preview-protocol.js";
+        script.async = false;
+        me.parentNode.insertBefore(script, me);
+      })();
+
+      const isIFramePreview = window.top !== window.self;
+
+      if (isIFramePreview) {
+        (function () {
+          var script = document.createElement("script");
+          script.src =
+            "https://codesandbox.io/p/chrome-devtool/protocol/index.js";
+
+          script.onload = () => {
+            const devtoolProtocol = window.chobitsu;
+            if (devtoolProtocol) {
+              window.addEventListener("message", (event) => {
+                const { type, data } = event.data;
+                if (type === "FROM_DEVTOOL") {
+                  devtoolProtocol.sendRawMessage(data);
+                }
+              });
+
+              devtoolProtocol.setOnMessage((data) => {
+                if (data.includes('"id":"tmp')) return;
+                window.parent.postMessage({ type: "TO_DEVTOOL", data }, "*");
+              });
+
+              devtoolProtocol.sendRawMessage(
+                `{"id":5,"method":"Runtime.enable","params":{}}`
+              );
+            }
+          };
+
+          (document.head || document.documentElement).prepend(script);
+        })();
+      }
+
+      if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === "undefined") {
+        let nextID = 0;
+        let hook = (__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
+          renderers: new Map(),
+          supportsFiber: true,
+          inject: (renderer) => {
+            const id = nextID++;
+            hook.renderers.set(id, renderer);
+            return id;
+          },
+          onScheduleFiberRoot() {},
+          onCommitFiberRoot() {},
+          onCommitFiberUnmount() {},
+        });
+      }
+
+      document.currentScript.remove();
+    </script>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -11,9 +73,10 @@
 
     <link rel="icon" href="rat.png" type="image/png" />
 
-    <!-- Dark theme CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="index.css" />
 
+    <!-- Scramjet + deps -->
     <script src="/scram/scramjet.all.js"></script>
     <script src="baremux/index.js" defer></script>
     <script src="epoxy/index.js" defer></script>
@@ -23,25 +86,40 @@
   </head>
 
   <body>
-    <!-- Title -->
-    <img src="rat.png" alt="Logo" style="width: 200px; margin-bottom: -25px" />
-
-    <div
-      class="flex-center"
-      style="margin: 0px 0; font-size: 3rem; font-weight: bold"
-    >
-      Rat Proxy
+    <!-- TOP URL BAR -->
+    <div id="topbar">
+      <form id="nav-form" autocomplete="off">
+        <div id="nav-controls">
+          <button id="backBtn" type="button" title="Back" disabled>◀</button>
+          <button id="forwardBtn" type="button" title="Forward" disabled>
+            ▶
+          </button>
+          <button id="refreshBtn" type="button" title="Refresh">⟳</button>
+        </div>
+        <input id="nav-input" type="text" placeholder="Enter URL or search" />
+        <button id="goBtn" type="submit">Go</button>
+      </form>
     </div>
 
-    <!-- Search form -->
-    <form id="sj-form" class="flex-center">
-      <input
-        id="sj-search-engine"
-        type="hidden"
-        value="https://www.google.com/search?q=%s"
+    <!-- OPTIONAL LANDING CONTENT (shows before first navigation) -->
+    <div id="home">
+      <img
+        src="rat.png"
+        alt="Logo"
+        style="width: 200px; margin-bottom: -25px"
       />
-      <input id="sj-address" type="text" placeholder="Search the web freely" />
-    </form>
+
+      <div
+        class="flex-center"
+        style="margin: 0; font-size: 3rem; font-weight: bold"
+      >
+        Rat Proxy
+      </div>
+
+      <p style="opacity: 0.7; margin-top: 10px">
+        Type a URL above to start browsing
+      </p>
+    </div>
 
     <!-- Errors -->
     <div class="desc left-margin">
