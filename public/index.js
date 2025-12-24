@@ -40,7 +40,7 @@ let activeTabId = null;
 /* ===== CONFIG ===== */
 const POLL_INTERVAL_MS = 1000; // adjust if needed
 const FALLBACK_SEARCH = "https://www.google.com/search?q=%s";
-const DEFAULT_NEW_TAB_URL = "https://google.com";
+const DEFAULT_NEW_TAB_URL = "https://4texas4.github.io/tools/search.html";
 
 /* ===== HELPERS (URL normalization / search) ===== */
 function ensureProtocol(u) {
